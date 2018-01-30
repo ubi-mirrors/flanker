@@ -334,6 +334,19 @@ def test_mx_aol_manage_flag_toggle():
     unmanaged = validate.aol.unmanaged_email(addr_obj.hostname)
     assert_equal(unmanaged, True)
 
+def test_good_tld():
+    # example.com is a valid TLD
+    addr_spec = 'test@example.com'
+    addr_obj, metrics = address.validate_address(addr_spec, skip_remote_checks=True, metrics=True)
+    assert_equal(addr_obj, address.parse('test@example.com'))
+    assert_not_equal(metrics['tld_lookup'], 0)
+
+    # example.com is a valid TLD
+    addr_spec = 'http://example.com'
+    addr_obj, metrics = address.validate_address(addr_spec, skip_remote_checks=True, metrics=True)
+    assert_equal(addr_obj, address.UrlAddress(_address='http://example.com'))
+    assert_not_equal(metrics['tld_lookup'], 0)
+
 def test_bad_tld():
     # con is not a valid TLD
     addr_spec = 'test@example.con'

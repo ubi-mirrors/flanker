@@ -286,12 +286,10 @@ def validate_address(addr_spec, metrics=False, skip_remote_checks=False):
     # sanity check
     if addr_spec is None:
         return None, mtimes
-    if '@' not in addr_spec:
-        return None, mtimes
 
     # run parser against address
     bstart = time()
-    paddr = parse(addr_spec, addr_spec_only=True, strict=True)
+    paddr = parse(addr_spec, strict=True)
     mtimes['parsing'] = time() - bstart
     if paddr is None:
         _log.debug('failed parse check for %s', addr_spec)
